@@ -11,3 +11,5 @@ ctrl + b 编译即可
 
 最后记得将配置文件 [userdefine.proc] 和 [config.proc] 
 复制到 x64 文件夹下的 relase/debug 目录下
+
+对了，头文件中有几个绝对路径也改一改
