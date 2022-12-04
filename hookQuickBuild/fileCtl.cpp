@@ -1,4 +1,4 @@
-#include "fileCtl.h"
+﻿#include "fileCtl.h"
 #include <stdarg.h>
 
 void Error_insert_File(const char* filename, int errLev, const char* error, ...)
