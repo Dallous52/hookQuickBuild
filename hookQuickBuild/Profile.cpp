@@ -44,7 +44,7 @@ std::vector<std::string> ProFile::GetConfig_Name_Num(char* txt)
 
 	ans.resize(2);
 
-	int mid = txts.find('=');
+	size_t mid = txts.find('=');
 
 	ans[0].append(txts, 0, mid);
 	ans[1].append(txts, mid + 1, txts.size() - 1);

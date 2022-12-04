@@ -56,6 +56,7 @@ LRESULT CALLBACK ExecuteProc(
 	if (command == becomeAdmin)
 	{
 		GainAdminPrivileges();
+		exit(0);
 	}
 
 	string path = user.GetPath(command);
