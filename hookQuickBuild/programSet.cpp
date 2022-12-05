@@ -2,6 +2,7 @@
 #include "fileCtl.h"
 #include <atlstr.h>
 
+
 std::string LPCWSTRTostring(LPCWSTR pWCStrKey)
 {
     //第一次调用确认转换后单字节字符串的长度，用于开辟空间
@@ -133,38 +134,8 @@ void SetStartRunning()
 
 void HotReset()
 {
-
-    PROCESS_INFORMATION pi; //启动窗口的信息
-
-    STARTUPINFO si; //进程的信息
-
-    memset(&si, 0, sizeof(si));
-
-    si.cb = sizeof(si);
-
-    si.wShowWindow = SW_SHOW;
-
-    si.dwFlags = STARTF_USESHOWWINDOW;
-
-    //2、得到本程序自身的全路径
-    TCHAR strExeFullDir[MAX_PATH];
-    GetModuleFileName(NULL, strExeFullDir, MAX_PATH);
-    LPCWSTR pa = strExeFullDir;
-    bool fRet = CreateProcess(pa, NULL, NULL, FALSE, NULL, NULL, NULL, NULL, &si, &pi);
-
-    if (fRet)
-    {
-        exit(0);
-        Error_insert_File(F_LOG, LOG_INFO, "Hot reset success");
-    }
-    else
-    {
-        Error_insert_File(F_LOG, LOG_INFO, "Hot reset failed");
-    }
-
-    //不使用的句柄最好关掉
-    CloseHandle(pi.hThread);
-    CloseHandle(pi.hProcess);
+    config.HotReset();
+    user.HotReset(config.m_reverse);
 }
 
 

@@ -23,37 +23,32 @@ LRESULT CALLBACK ExecuteProc(
 	}KBDLLHOOKSTRUCT,*LPKBDLLHOOKSTRUCT,*PKBDLLHOOKSTRUCT;
 	*/
 
-	string command;
+	vector<uint32_t> comm;
 
 	for (auto tmp : config.m_parameter)
 	{
 		if (IsKeyPressed(tmp.first))
 		{
-			if (command.empty())
-			{
-				command = tmp.second;
-			}
-			else
-			{
-				command += "+" + tmp.second;
-			}
+			comm.emplace_back(tmp.first);
 		}
 	}
-		
+	
+	string command = user.CommandSplicing(comm);
+
 	string programExit = user.GetPath("key_to_exit");
-	if (command == programExit)
+	if (command == user.TextCommandToNumber(programExit, config.m_reverse))
 	{
-		exit(0);
+		system("taskkill /f /t /im hookQuickBuild.exe");
 	}
 
 	string programReset = user.GetPath("key_to_reset");
-	if (command == programReset)
+	if (command == user.TextCommandToNumber(programReset, config.m_reverse))
 	{
 		HotReset();
 	}
 
 	string becomeAdmin = user.GetPath("become_admin");
-	if (command == becomeAdmin)
+	if (command == user.TextCommandToNumber(becomeAdmin, config.m_reverse))
 	{
 		GainAdminPrivileges();
 		exit(0);
@@ -77,10 +72,6 @@ LRESULT CALLBACK ExecuteProc(
 		LPCWSTR pa = stringToLPCWSTR(path);
 		bool fRet = CreateProcess(pa, NULL, NULL, FALSE, NULL, NULL, NULL, NULL, &si, &pi);
 
-		if (fRet)
-		{
-			cout << command << " :> " << path << endl;
-		}
 
 		//不使用的句柄最好关掉
 		CloseHandle(pi.hThread);
@@ -94,7 +85,7 @@ LRESULT CALLBACK ExecuteProc(
 int _tmain(int argc, _TCHAR* argv[])
 {
 	config.Initialize();
-	user.Initialize();
+	user.Initialize(config.m_reverse);
 
 	if (stoi(user.GetPath("is_print_proc")))
 	{
@@ -456,7 +447,8 @@ LRESULT CALLBACK LowLevelKeyboardProc(
 	//		}
 	//	}
 	*/
-	string command;
+
+	vector<uint32_t> comm;
 
 	if (ks->flags == 128 || ks->flags == 129)
 	{
@@ -464,25 +456,21 @@ LRESULT CALLBACK LowLevelKeyboardProc(
 		{
 			if (IsKeyPressed(tmp.first))
 			{
-				if (command.empty())
-				{
-					command = tmp.second;
-				}
-				else
-				{
-					command += "+" + tmp.second;
-				}
+				comm.emplace_back(tmp.first);
 			}
 		}
 
+		string command = user.CommandSplicing(comm);
+
+
 		string programExit = user.GetPath("key_to_exit");
-		if (command == programExit)
+		if (command == user.TextCommandToNumber(programExit, config.m_reverse))
 		{
-			exit(0);
+			system("taskkill /f /t /im hookQuickBuild.exe");
 		}
 
 		string programReset = user.GetPath("key_to_reset");
-		if (command == programReset)
+		if (command == user.TextCommandToNumber(programReset, config.m_reverse))
 		{
 			HotReset();
 		}

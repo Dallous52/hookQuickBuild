@@ -29,12 +29,18 @@ void Config::Initialize()
 		if (!ansed.empty())
 		{
 			m_parameter[std::stoul(ansed[1])] = ansed[0];
+			m_reverse[ansed[0]] = std::stoul(ansed[1]);
 		}
 	}
 
-	for (int i = 65; i <= 90; ++i)
+	for (uint32_t i = 65; i <= 90; ++i)
 	{
-		m_parameter[i] = (char)i;
+		string tmp;
+		tmp.push_back((char)i);
+		
+		m_parameter[i] = tmp;
+	
+		m_reverse[tmp] = i;
 	}
 
 	file.close();
@@ -61,6 +67,17 @@ void Config::TextPrint()
 
 	return;
 }
+
+
+
+void Config::HotReset()
+{
+	m_parameter.clear();
+	m_reverse.clear();
+	Initialize();
+}
+
+
 
 
 Config::~Config()

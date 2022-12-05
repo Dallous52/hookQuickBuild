@@ -16,10 +16,15 @@ public:
 	//获取键名
 	std::string GetKeyName(uint32_t code);
 
+	//热重载相关函数
+	void HotReset();
+
 	//测试打印函数
 	void TextPrint();
 	
 	//键盘按键与对应键值
 	std::unordered_map<uint32_t, std::string>	m_parameter;
+
+	std::unordered_map<std::string, uint32_t>	m_reverse;
 
 };
