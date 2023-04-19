@@ -152,7 +152,7 @@ int _tmain(int argc, _TCHAR* argv[])
 				DispatchMessageW(&msg);
 			}
 			else
-				Sleep(0);    //避免CPU全负载运行
+				Sleep(100);    //避免CPU全负载运行
 		}
 		else
 		{
